@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+
+# quarantine and vaccine
+
 # index --> [0,self.popsize)
 # health: 0 --> healthy, 1--> infected, 2--> dead
 # pos --> (x,y) 
@@ -42,7 +45,7 @@ class City:
         # self.num_iter = 0
         # (x,y) : #infected person
         self.matrix_length = 1000
-        self.pop_size = 250000
+        self.pop_size = self.matrix_length**2*0.25
         self.init_infected_rate = 0.2
         self.infected_rate = 0
         self.mobility = 0.5
@@ -115,7 +118,7 @@ class City:
         directions = [(i,j) for i in range(-1,2) for j in range(-1,2) if (i,j)!=(0,0)]
         self.re_list += [len(self.infected)]
         for person in self.healthy|self.infected:
-            if person.move: #move
+            if person.move and not (person.quarantine and person.health==1): #move
                 x,y = person.pos
                 dx,dy = person.direction
                 nx,ny = x+dx,y+dy
