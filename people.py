@@ -41,8 +41,8 @@ class City:
         self.graph = {}
         # self.num_iter = 0
         # (x,y) : #infected person
-        self.matrix_length = 1000
-        self.pop_size = 250000
+        self.matrix_length = 100
+        self.pop_size = 2500
         self.init_infected_rate = 0.2
         self.infected_rate = 0
         self.mobility = 0.5
@@ -198,12 +198,14 @@ class City:
 if __name__ == '__main__':
     print("main")
     new_city = City()
-    num_iter = 550
-    for i in range(num_iter):
-        if len(new_city.healthy)+len(new_city.infected) == 0:
-            break
-        print(i)
-        new_city.iter()
+    for j in range(5000):
+        print(j)
+        num_iter = 550
+        for i in range(num_iter):
+            if len(new_city.healthy)+len(new_city.infected) == 0:
+                break
+            # print(i)
+            new_city.iter()
 
     Re = sum([max(y-x,0)/max(x,1) for x,y in zip(new_city.re_list,new_city.re_list[1:])])/max(1,len(new_city.re_list)-1)
     Imax = max(new_city.re_list)
