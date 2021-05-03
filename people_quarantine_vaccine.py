@@ -137,7 +137,6 @@ class City:
                     if neighbor.health == 1: # neighbor infected
                         if person.health == 0:
                             if not person.vaccine or random.uniform(0, 1)< self.vaccine_effective:
-
                                 self.healthy.remove(person)
                                 self.infected.add(person)
                         person.health = 1 # infected
@@ -217,7 +216,7 @@ if __name__ == '__main__':
     Imax_arr = []
     num_iter_arr = []
     s_arr = [0,0.25,0.5,0.75]
-    vaccine_rate_arr = [0.01,0.02,0.3]
+    vaccine_rate_arr = [0.01,0.02,0.03]
     quarantine_arr = [0,0.25,0.5,0.75]
     
     
