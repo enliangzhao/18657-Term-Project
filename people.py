@@ -130,14 +130,22 @@ class City:
                     neighbor = self.graph[nx,ny]
                     if neighbor.health == 1: # neighbor infected
                         if person.health == 0:
-                            self.healthy.remove(person)
-                            self.infected.add(person)
-                        person.health = 1 # infected
+                            # print(person in self.healthy, person in self.infected)
+                            if person.vaccine and random.uniform(0, 1)<1-self.vaccine_effective:
+                                pass
+                            else:
+                                self.healthy.remove(person)
+                                self.infected.add(person)
+                                person.health = 1 # infected
                     elif person.health == 1: # neighbor infected
                         if neighbor.health == 0:
-                            self.healthy.remove(neighbor)
-                            self.infected.add(neighbor)
-                        neighbor.health = 1 # infected
+                            # print(neighbor in self.healthy, neighbor in self.infected)
+                            if neighbor.vaccine and random.uniform(0, 1)<1-self.vaccine_effective:
+                                pass
+                            else:
+                                self.healthy.remove(neighbor)
+                                self.infected.add(neighbor)
+                                neighbor.health = 1
                     directions.remove((dx,dy))
                     person.direction = random.choice(directions)
                     directions.append((dx,dy))
