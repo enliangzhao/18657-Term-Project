@@ -208,12 +208,12 @@ class City:
 
 if __name__ == '__main__':
     print("main")
-    Re_arr = []
-    Imax_arr = []
-    num_iter_arr = []
     s_arr = [0,0.25,0.5,0.75]
     
     for s in s_arr:
+        Re_arr = []
+        Imax_arr = []
+        num_iter_arr = []
         for j in range(600):
             print(j)
             new_city = City(mobility=1-s)
@@ -244,6 +244,6 @@ if __name__ == '__main__':
             "s": s
         }
         f.write(json.dumps(json_obj)+"\n")
-        print(Re)
-        print(Imax)
-        print(num_iter)
+        print(json_obj["Re"])
+        print(json_obj["Imax"])
+        print(json_obj["num_iter"])

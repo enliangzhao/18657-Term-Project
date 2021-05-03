@@ -212,15 +212,16 @@ class City:
 
 if __name__ == '__main__':
     print("main")
-    Re_arr = []
-    Imax_arr = []
-    num_iter_arr = []
+    
     s_arr = [0,0.25,0.5,0.75]
     vaccine_rate_arr = [0.01,0.02,0.03]
     quarantine_arr = [0.25,0.5,0.75]
     
     
     for v,q in zip(vaccine_rate_arr,quarantine_arr):
+        Re_arr = []
+        Imax_arr = []
+        num_iter_arr = []
         for j in range(600):
             print(j)
             new_city = City(quarantine_rate=q,daily_vaccine_rate=v)
@@ -251,6 +252,6 @@ if __name__ == '__main__':
             "vaccine_rate": v
         }
         f.write(json.dumps(json_obj)+"\n")
-        print(Re)
-        print(Imax)
-        print(num_iter)
+        print(json_obj["Re"])
+        print(json_obj["Imax"])
+        print(json_obj["num_iter"])

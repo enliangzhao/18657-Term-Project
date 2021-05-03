@@ -203,14 +203,14 @@ class City:
 
 if __name__ == '__main__':
     print("main")
-    Re_arr = []
-    Imax_arr = []
-    num_iter_arr = []
     quarantine_arr = [0.25,0.5,0.75]
     
     
     for q in quarantine_arr:
-        for j in range(600):
+        Re_arr = []
+        Imax_arr = []
+        num_iter_arr = []
+        for j in range(1):
             print(j)
             new_city = City(quarantine_rate=q)
             num_iter = 550
@@ -239,6 +239,6 @@ if __name__ == '__main__':
             "q": q
         }
         f.write(json.dumps(json_obj)+"\n")
-        print(Re)
-        print(Imax)
-        print(num_iter)
+        print(json_obj["Re"])
+        print(json_obj["Imax"])
+        print(json_obj["num_iter"])
