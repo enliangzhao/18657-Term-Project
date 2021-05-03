@@ -45,7 +45,7 @@ class City:
         # self.num_iter = 0
         # (x,y) : #infected person
         self.matrix_length = 200
-        self.pop_size = self.matrix_length**2/4
+        self.pop_size = self.matrix_length**2//4
         self.init_infected_rate = 0.2
         self.infected_rate = 0
         self.mobility = mobility
@@ -235,7 +235,7 @@ if __name__ == '__main__':
             "num_iter": sum(num_iter_arr)/len(num_iter_arr),
             "s": s
         }
-        f.write(json.dumps(json_obj))
+        f.write(json.dumps(json_obj)+"\n")
         print(Re)
         print(Imax)
         print(num_iter)
