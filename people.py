@@ -35,7 +35,7 @@ class People:
 
 
 class City:
-    def __init__(self):
+    def __init__(self,mobility=0.5,quarantine_rate=0.5,daily_vaccine_rate=0.01):
         self.healthy = set()
         self.vaccinated = set()
         self.infected = set()
@@ -44,11 +44,11 @@ class City:
         self.graph = {}
         # self.num_iter = 0
         # (x,y) : #infected person
-        self.matrix_length = 100
-        self.pop_size = 2500
+        self.matrix_length = 200
+        self.pop_size = self.matrix_length**2/4
         self.init_infected_rate = 0.2
         self.infected_rate = 0
-        self.mobility = 0.5
+        self.mobility = mobility
         # 1-e^(-lam*(x+1)) - (1-e^(-lam*x)
         self.death_rate = 0.1
         self.recover_rate = 1 - self.death_rate
@@ -65,7 +65,7 @@ class City:
         self.K = 20
         self.quarantine_rate = 0.5
         # in each iteration, there will be this portion of healthy people get vaccinated
-        self.vaccine_rate = 0.001
+        self.vaccine_rate = 0
 
         self.self_cure_rate = 0.001
         self.Imax = 0
@@ -92,7 +92,7 @@ class City:
         
         self.re_list += [len(self.infected)]
         
-        self.print_graph()
+        # self.print_graph()
 
         
     def exponential(self, lam, x):
@@ -116,7 +116,7 @@ class City:
         # self.num_iter += 1
         # run iterations
         directions = [(i,j) for i in range(-1,2) for j in range(-1,2) if (i,j)!=(0,0)]
-        self.re_list += [len(self.infected)]
+        
         for person in self.healthy|self.infected:
             if person.move: #move
                 x,y = person.pos
@@ -177,7 +177,7 @@ class City:
                     del self.graph[i,j]
         # self.print_graph()
         # self.animation()
-
+        self.re_list += [len(self.infected)]
 
     def animation(self):
         # Make a 9x9 grid...
@@ -200,36 +200,42 @@ class City:
 
 if __name__ == '__main__':
     print("main")
-    new_city = City()
     Re_arr = []
     Imax_arr = []
     num_iter_arr = []
+    s_arr = [0,0.25,0.5,0.75]
+    
+    for s in s_arr:
+        for j in range(600):
+            print(j)
+            new_city = City(mobility=1-s)
+            
+            num_iter = 550
+            for i in range(num_iter):
+                if len(new_city.healthy)+len(new_city.infected) == 0:
+                    break
+                if i and len(new_city.infected) == 0:
+                    break
+                # print(i)
+                new_city.iter()
 
-    for j in range(5000):
-        print(j)
-        num_iter = 550
-        for i in range(num_iter):
-            if len(new_city.healthy)+len(new_city.infected) == 0:
-                break
-            # print(i)
-            new_city.iter()
+            Re = sum([max(y-x,0)/max(x,1) for x,y in zip(new_city.re_list,new_city.re_list[1:])])#/max(1,len(new_city.re_list)-1)
+            Imax = max(new_city.re_list)
+            num_iter = len(new_city.re_list)-1
 
-        Re = sum([max(y-x,0)/max(x,1) for x,y in zip(new_city.re_list,new_city.re_list[1:])])/max(1,len(new_city.re_list)-1)
-        Imax = max(new_city.re_list)
-        num_iter = len(new_city.re_list)-1
+            Re_arr += [Re]
+            Imax_arr += [Imax]
+            num_iter_arr += [num_iter]
 
-        Re_arr += [Re]
-        Imax_arr += [Imax]
-        num_iter_arr += [num_iter]
-
-    filepath = sys.argv[1]
-    f = open(filepath,'a')
-    json_obj = {
-        "Re": sum(Re_arr)/len(Re_arr),
-        "Imax": sum(Imax_arr)/len(Imax_arr),
-        "num_iter": sum(num_iter_arr)/len(num_iter_arr)
-    }
-
-    print(Re)
-    print(Imax)
-    print(num_iter)
+        filepath = sys.argv[1]
+        f = open(filepath,'a')
+        json_obj = {
+            "Re": sum(Re_arr)/len(Re_arr),
+            "Imax": sum(Imax_arr)/len(Imax_arr),
+            "num_iter": sum(num_iter_arr)/len(num_iter_arr),
+            "s": s
+        }
+        f.write(json.dumps(json_obj))
+        print(Re)
+        print(Imax)
+        print(num_iter)
