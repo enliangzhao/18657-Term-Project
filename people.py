@@ -3,6 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.animation as animation
 
 import json
 import sys
@@ -53,6 +54,7 @@ class City:
         self.death_rate = 0.1
         self.recover_rate = 1 - self.death_rate
         self.re_list = []
+        self.animation_matrix = []
 
         self.infected_period = 30
 
@@ -184,7 +186,7 @@ class City:
                     self.infected.remove(person)
                     del self.graph[i,j]
         # self.print_graph()
-        # self.animation()
+        self.animation()
         self.re_list += [len(self.infected)]
 
     def animation(self):
@@ -201,10 +203,11 @@ class City:
 
         # row_labels = range(nrows)
         # col_labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-        plt.matshow(image)
+        # plt.matshow(image)
         # plt.xticks(range(ncols), col_labels)
         # plt.yticks(range(nrows), row_labels)
-        plt.show()
+        # plt.show()
+        self.animation_matrix = image
 
 if __name__ == '__main__':
     print("main")
@@ -247,3 +250,22 @@ if __name__ == '__main__':
         print(json_obj["Re"])
         print(json_obj["Imax"])
         print(json_obj["num_iter"])
+
+    # ANIMATION
+    # new_city = City(mobility = 1-0.5)
+    # new_city.animation()
+    # initial_matrix = new_city.animation_matrix
+    # def animate(frames):
+    #     if len(new_city.healthy)+len(new_city.infected) == 0:
+    #         return
+    #     if len(new_city.infected) == 0:
+    #         return
+    #     new_city.iter()
+    #     matrice.set_array(new_city.animation_matrix)
+
+    # fig, ax = plt.subplots()
+    # matrice = ax.matshow(initial_matrix)
+    # anim = animation.FuncAnimation(fig, animate, frames=550, interval=50)
+    # plt.show()
+
+
