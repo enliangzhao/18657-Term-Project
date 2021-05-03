@@ -130,12 +130,12 @@ class City:
                     directions.append((dx,dy))
                 elif (nx,ny) in self.graph:
                     neighbor = self.graph[nx,ny]
-                    if neighbor.health == 1: # neighbor infected
+                    if neighbor.health == 1 and not neighbor.quarantine: # neighbor infected
                         if person.health == 0:
                             self.healthy.remove(person)
                             self.infected.add(person)
                         person.health = 1 # infected
-                    elif person.health == 1: # neighbor infected
+                    elif person.health == 1 and not person.quarantine: # neighbor infected
                         if neighbor.health == 0:
                             self.healthy.remove(neighbor)
                             self.infected.add(neighbor)
@@ -206,14 +206,13 @@ if __name__ == '__main__':
     Re_arr = []
     Imax_arr = []
     num_iter_arr = []
-    quarantine_arr = [0,0.25,0.5,0.75]
+    quarantine_arr = [0.25,0.5,0.75]
     
     
     for q in quarantine_arr:
         for j in range(600):
             print(j)
             new_city = City(quarantine_rate=q)
-            new_city.mobility = 1-s
             num_iter = 550
             for i in range(num_iter):
                 if len(new_city.healthy)+len(new_city.infected) == 0:
