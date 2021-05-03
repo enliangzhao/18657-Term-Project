@@ -134,13 +134,13 @@ class City:
                     directions.append((dx,dy))
                 elif (nx,ny) in self.graph:
                     neighbor = self.graph[nx,ny]
-                    if neighbor.health == 1: # neighbor infected
+                    if neighbor.health == 1 and not neighbor.quarantine: # neighbor infected
                         if person.health == 0:
                             if not person.vaccine or random.uniform(0, 1)< self.vaccine_effective:
                                 self.healthy.remove(person)
                                 self.infected.add(person)
                         person.health = 1 # infected
-                    elif person.health == 1: # neighbor infected
+                    elif person.health == 1 and not person.quarantine: # neighbor infected
                         if neighbor.health == 0:
                             if not person.vaccine or random.uniform(0, 1)< self.vaccine_effective:
                                 self.healthy.remove(neighbor)
