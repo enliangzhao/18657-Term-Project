@@ -213,7 +213,6 @@ if __name__ == '__main__':
         for j in range(600):
             print(j)
             new_city = City(quarantine_rate=q)
-            new_city.mobility = 1-s
             num_iter = 550
             for i in range(num_iter):
                 if len(new_city.healthy)+len(new_city.infected) == 0:
