@@ -4,6 +4,9 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+import json
+
 
 
 # quarantine and vaccine
@@ -210,6 +213,10 @@ class City:
 if __name__ == '__main__':
     print("main")
     new_city = City()
+    Re_arr = []
+    Imax_arr = []
+    num_iter_arr = []
+
     for j in range(5000):
         print(j)
         num_iter = 550
@@ -219,9 +226,21 @@ if __name__ == '__main__':
             # print(i)
             new_city.iter()
 
-    Re = sum([max(y-x,0)/max(x,1) for x,y in zip(new_city.re_list,new_city.re_list[1:])])/max(1,len(new_city.re_list)-1)
-    Imax = max(new_city.re_list)
-    num_iter = len(new_city.re_list)-1
+        Re = sum([max(y-x,0)/max(x,1) for x,y in zip(new_city.re_list,new_city.re_list[1:])])/max(1,len(new_city.re_list)-1)
+        Imax = max(new_city.re_list)
+        num_iter = len(new_city.re_list)-1
+
+        Re_arr += [Re]
+        Imax_arr += [Imax]
+        num_iter_arr += [num_iter]
+
+    filepath = sys.argv[1]
+    f = open(filepath,'a')
+    json_obj = {
+        "Re": sum(Re_arr)/len(Re_arr),
+        "Imax": sum(Imax_arr)/len(Imax_arr),
+        "num_iter": sum(num_iter_arr)/len(num_iter_arr)
+    }
 
     print(Re)
     print(Imax)
