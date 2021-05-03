@@ -210,7 +210,7 @@ if __name__ == '__main__':
         Re_arr = []
         Imax_arr = []
         num_iter_arr = []
-        for j in range(1):
+        for j in range(600):
             print(j)
             new_city = City(quarantine_rate=q)
             num_iter = 550
