@@ -217,7 +217,7 @@ if __name__ == '__main__':
     num_iter_arr = []
     s_arr = [0,0.25,0.5,0.75]
     vaccine_rate_arr = [0.01,0.02,0.03]
-    quarantine_arr = [0,0.25,0.5,0.75]
+    quarantine_arr = [0.25,0.5,0.75]
     
     
     for v,q in zip(vaccine_rate_arr,quarantine_arr):

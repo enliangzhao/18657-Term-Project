@@ -206,7 +206,7 @@ if __name__ == '__main__':
     Re_arr = []
     Imax_arr = []
     num_iter_arr = []
-    quarantine_arr = [0,0.25,0.5,0.75]
+    quarantine_arr = [0.25,0.5,0.75]
     
     
     for q in quarantine_arr:
