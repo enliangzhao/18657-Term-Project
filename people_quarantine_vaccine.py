@@ -251,7 +251,7 @@ if __name__ == '__main__':
             "quaratine_rate": q,
             "vaccine_rate": v
         }
-        f.write(json.dumps(json_obj))
+        f.write(json.dumps(json_obj)+"\n")
         print(Re)
         print(Imax)
         print(num_iter)

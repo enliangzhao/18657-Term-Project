@@ -239,7 +239,7 @@ if __name__ == '__main__':
             "num_iter": sum(num_iter_arr)/len(num_iter_arr),
             "q": q
         }
-        f.write(json.dumps(json_obj))
+        f.write(json.dumps(json_obj)+"\n")
         print(Re)
         print(Imax)
         print(num_iter)
