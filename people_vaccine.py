@@ -228,6 +228,8 @@ if __name__ == '__main__':
             for i in range(num_iter):
                 if len(new_city.healthy)+len(new_city.infected) == 0:
                     break
+                if i and len(new_city.infected) == 0:
+                    break
                 # print(i)
                 new_city.iter()
 
