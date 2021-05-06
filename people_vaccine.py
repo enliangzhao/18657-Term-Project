@@ -72,7 +72,7 @@ class City:
         self.Imax = 0
 
         # days we need to produce vaccine
-        self.vaccine_release = 200
+        self.vaccine_release = 100
         directions = [(i,j) for i in range(-1,2) for j in range(-1,2) if (i,j)!=(0,0)]
 
         random_init = random.sample([(i,j) for i in range(self.matrix_length) for j in range(self.matrix_length)], self.pop_size)
@@ -165,7 +165,7 @@ class City:
                 
                 person = self.graph[i,j]
 
-                if person.health == 0 and random.uniform(0, 1) < self.daily_vaccine_rate:
+                if person.health == 0 and random.uniform(0, 1) < self.daily_vaccine_rate and len(o)(self.re_list) >= self.vaccine_release :
                     person.vaccine = True
 
                 # recover

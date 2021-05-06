@@ -164,7 +164,7 @@ class City:
                 
                 person = self.graph[i,j]
 
-                if person.health == 0 and random.uniform(0, 1) < self.daily_vaccine_rate:
+                if person.health == 0 and random.uniform(0, 1) < self.daily_vaccine_rate and len(o)(self.re_list) >= self.vaccine_release :
                     person.vaccine = True
 
                 # recover
