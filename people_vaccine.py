@@ -4,12 +4,9 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-import sys
 import json
+import sys
 
-
-
-# quarantine and vaccine
 
 # index --> [0,self.popsize)
 # health: 0 --> healthy, 1--> infected, 2--> dead
@@ -56,13 +53,9 @@ class City:
         self.death_rate = 0.1
         self.recover_rate = 1 - self.death_rate
         self.re_list = []
-
-        self.infected_period = 30
-
         self.daily_vaccine_rate = daily_vaccine_rate
 
-        # vaccine ineffective
-        self.vaccine_effective = 0.05
+        self.infected_period = 30
 
         # 1-e^(-lam*(x+1)) - (1-e^(-lam*x)
         self.lam_death = -1*math.log(1-self.death_rate)/ self.infected_period
@@ -73,7 +66,7 @@ class City:
         self.K = 20
         self.quarantine_rate = 0.5
         # in each iteration, there will be this portion of healthy people get vaccinated
-        # self.vaccine_rate = 0.001
+        self.vaccine_rate = 0
 
         self.self_cure_rate = 0.001
         self.Imax = 0
@@ -124,7 +117,7 @@ class City:
         # self.num_iter += 1
         # run iterations
         directions = [(i,j) for i in range(-1,2) for j in range(-1,2) if (i,j)!=(0,0)]
-        # self.re_list += [len(self.infected)]
+        
         for person in self.healthy|self.infected:
             if person.move: #move
                 x,y = person.pos
@@ -137,23 +130,18 @@ class City:
                 elif (nx,ny) in self.graph:
                     neighbor = self.graph[nx,ny]
                     if neighbor.health == 1: # neighbor infected
-                        if person.health == 0:
+                        if person.health == 0 and not person.vaccine:
                             # print(person in self.healthy, person in self.infected)
-                            if person.vaccine and random.uniform(0, 1)<1-self.vaccine_effective:
-                                pass
-                            else:
-                                self.healthy.remove(person)
-                                self.infected.add(person)
-                                person.health = 1 # infected
+                            self.healthy.remove(person)
+                            self.infected.add(person)
+                            person.health = 1 # infected
                     elif person.health == 1: # neighbor infected
-                        if neighbor.health == 0:
+                        if neighbor.health == 0 and not neighbor.vaccine:
                             # print(neighbor in self.healthy, neighbor in self.infected)
-                            if neighbor.vaccine and random.uniform(0, 1)<1-self.vaccine_effective:
-                                pass
-                            else:
-                                self.healthy.remove(neighbor)
-                                self.infected.add(neighbor)
-                                neighbor.health = 1
+                            
+                            self.healthy.remove(neighbor)
+                            self.infected.add(neighbor)
+                            neighbor.health = 1
                     directions.remove((dx,dy))
                     person.direction = random.choice(directions)
                     directions.append((dx,dy))
@@ -177,27 +165,26 @@ class City:
                 
                 person = self.graph[i,j]
 
-                if person.health == 0 and random.uniform(0, 1)<self.daily_vaccine_rate:
+                if person.health == 0 and random.uniform(0, 1) < self.daily_vaccine_rate:
                     person.vaccine = True
+
                 # recover
-                elif person.health == 1 and (person.infect_date == self.infected_period or random.uniform(0,1) < self.exponential(self.lam_recover, 0) - self.exponential(self.lam_recover, person.infect_date+1) + self.exponential(self.lam_recover, person.infect_date)):
+                if person.health == 1 and (person.infect_date == self.infected_period or random.uniform(0,1) < self.exponential(self.lam_recover, 0) - self.exponential(self.lam_recover, person.infect_date+1) + self.exponential(self.lam_recover, person.infect_date)):
                     person.health = 0
                     person.infect_date = 0
                     self.healthy.add(person)
                     self.infected.remove(person)
-            
                     
                 # death
                 elif person.health == 1 and (random.uniform(0,1) < self.exponential(self.lam_death, person.infect_date+1) - self.exponential(self.lam_death, person.infect_date)):
                     person.health = 2
                     self.death.add(person)
-                    # print(person in self.infected, person.health)
+                    # print(person in self.infected, )
                     self.infected.remove(person)
                     del self.graph[i,j]
         # self.print_graph()
         # self.animation()
         self.re_list += [len(self.infected)]
-
 
     def animation(self):
         # Make a 9x9 grid...
@@ -217,7 +204,6 @@ class City:
         # plt.xticks(range(ncols), col_labels)
         # plt.yticks(range(nrows), row_labels)
         plt.show()
-
 if __name__ == '__main__':
     print("main")
     
@@ -227,7 +213,7 @@ if __name__ == '__main__':
         Re_arr = []
         Imax_arr = []
         num_iter_arr = []
-        for j in range(600):
+        for j in range(1000):
             print(j)
             new_city = City(daily_vaccine_rate=v)
             num_iter = 550

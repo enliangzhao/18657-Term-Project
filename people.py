@@ -214,7 +214,7 @@ if __name__ == '__main__':
         Re_arr = []
         Imax_arr = []
         num_iter_arr = []
-        for j in range(600):
+        for j in range(1000):
             print(j)
             new_city = City(mobility=1-s)
             
